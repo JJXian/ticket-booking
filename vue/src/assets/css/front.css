@@ -45,6 +45,7 @@ body {
 .front-header-dropdown {
     display: flex;
     align-items: center;
+    color: #ffffff;
     justify-content: right;
 }
 .el-dropdown-menu {

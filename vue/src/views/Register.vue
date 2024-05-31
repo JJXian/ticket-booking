@@ -14,7 +14,12 @@
         <el-form-item prop="confirmPass">
           <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPass"></el-input>
         </el-form-item>
-
+        <el-form-item>
+          <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%">
+            <el-option label="管理员" value="ADMIN"></el-option>
+            <el-option label="用户" value="USER"></el-option>
+          </el-select>
+        </el-form-item>
         <el-form-item>
           <el-button size="medium" style="width: 100%; background-color: #2a60c9; border-color: #2a60c9; color: white" @click="register">注 册</el-button>
         </el-form-item>
@@ -85,7 +90,7 @@ export default {
 .container {
   height: 100vh;
   overflow: hidden;
-  background-image: url("@/assets/imgs/bg1.jpg");
+  background-image: url("@/assets/imgs/bg3.jpg");
   background-size: 100%;
   display: flex;
   align-items: center;

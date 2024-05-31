@@ -1,10 +1,12 @@
 package com.example.entity;
 
+import java.io.Serializable;
+
 /**
  * @Author: jjxian
  * @CreateTime: 2024-05-31
  */
-public class User {
+public class User extends Account implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private Integer id;

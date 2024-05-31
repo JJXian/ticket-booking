@@ -7,9 +7,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.example.common.Constants;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
+import com.example.service.AdminService;
+import com.example.service.UserService;
 import com.example.service.impl.AdminServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -27,14 +30,20 @@ public class TokenUtils {
 
     private static final Logger log = LoggerFactory.getLogger(TokenUtils.class);
 
-    private static AdminServiceImpl staticAdminService;
+    private static AdminService staticAdminService;
+
+    private static UserService staticUserService;
 
     @Resource
-    AdminServiceImpl adminService;
+    AdminService adminService;
+
+    @Resource
+    UserService userService;
 
     @PostConstruct
     public void setUserService() {
         staticAdminService = adminService;
+        staticUserService  = userService;
     }
 
     /**
@@ -60,6 +69,10 @@ public class TokenUtils {
                 if (RoleEnum.ADMIN.name().equals(role)) {
                     return staticAdminService.selectById(Integer.valueOf(userId));
                 }
+                if (RoleEnum.USER.name().equals(role)) {
+                    return staticUserService.selectById(Integer.valueOf(userId));
+                }
+
             }
         } catch (Exception e) {
             log.error("获取当前用户信息出错", e);

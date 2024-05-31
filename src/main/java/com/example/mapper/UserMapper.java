@@ -1,5 +1,6 @@
 package com.example.mapper;
 
+import com.example.entity.Account;
 import com.example.entity.Admin;
 import com.example.entity.User;
 import org.apache.ibatis.annotations.Delete;
@@ -11,7 +12,7 @@ import java.util.List;
 @Mapper
 public interface UserMapper {
     @Select("select * from user where  username = #{username}")
-    User SelectByUsername(String username);
+    User selectByUsername(String username);
 
     void insert(User user);
 
@@ -26,4 +27,7 @@ public interface UserMapper {
     List<User> selectAll(User user);
 
     void updateById(User user);
+
+    @Select("select * from user where id = #{id}")
+    Account selectById(Integer id);
 }

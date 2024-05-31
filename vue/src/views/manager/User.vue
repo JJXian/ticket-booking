@@ -65,6 +65,9 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="form.email" placeholder="邮箱"></el-input>
         </el-form-item>
+        <el-form-item label="余额" prop="account">
+          <el-input v-model="form.account" placeholder="余额"></el-input>
+        </el-form-item>
         <el-form-item label="头像">
           <el-upload
               class="avatar-uploader"

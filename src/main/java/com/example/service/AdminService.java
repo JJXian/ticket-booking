@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.entity.Account;
 import com.example.entity.Admin;
 import com.github.pagehelper.PageInfo;
 
@@ -19,4 +20,10 @@ public interface AdminService {
     List<Admin> selectAll(Admin admin);
 
     PageInfo<Admin> selectPage(Admin admin, Integer pageNum, Integer pageSize);
+
+    Account login(Account account);
+
+    void register(Account account);
+
+    void updatePassword(Account account);
 }

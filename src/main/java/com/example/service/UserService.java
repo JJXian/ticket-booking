@@ -1,5 +1,6 @@
 package com.example.service;
 
+import com.example.entity.Account;
 import com.example.entity.Admin;
 import com.example.entity.User;
 import com.github.pagehelper.PageInfo;
@@ -16,4 +17,13 @@ public interface UserService {
     void deleteBatch(List<Integer> ids);
 
     void updateById(User user);
+
+    Account login(Account account);
+
+    void register(Account account);
+
+
+    Account selectById(Integer id);
+
+    void updatePassword(Account account);
 }
