@@ -23,7 +23,9 @@ public interface UserService {
     void register(Account account);
 
 
-    Account selectById(Integer id);
+    User selectById(Integer id);
 
     void updatePassword(Account account);
+
+    void recharge(Double account);
 }

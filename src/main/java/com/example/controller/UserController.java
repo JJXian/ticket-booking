@@ -41,6 +41,17 @@ public class UserController {
     }
 
     /**
+     * 余额充值
+     * @param account
+     * @return
+     */
+    @GetMapping("/recharge/{account}")
+    public Result recharge(@PathVariable Double account){
+        userService.recharge(account);
+        return Result.success();
+    }
+
+    /**
      * 批量删除
      */
     @DeleteMapping("/delete/batch")
@@ -56,6 +67,13 @@ public class UserController {
     public Result updateById(@RequestBody User user) {
         userService.updateById(user);
         return Result.success();
+    }
+
+
+    @GetMapping("/selectById/{id}")
+    public Result selectById(@PathVariable Integer id) {
+        User user = userService.selectById(id);
+        return Result.success(user);
     }
 
     /**

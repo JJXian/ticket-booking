@@ -29,5 +29,5 @@ public interface UserMapper {
     void updateById(User user);
 
     @Select("select * from user where id = #{id}")
-    Account selectById(Integer id);
+    User selectById(Integer id);
 }

@@ -2,8 +2,11 @@
   <div class="main-content">
     <el-card style="width: 50%; margin: 30px auto">
       <div style="text-align: right; margin-bottom: 20px">
+        <el-button type="warning" @click="rechargeInit">充值</el-button>
         <el-button type="primary" @click="updatePassword">修改密码</el-button>
+
       </div>
+
       <el-form :model="user" label-width="80px" style="padding-right: 20px">
         <div style="margin: 15px; text-align: center">
           <el-upload
@@ -28,6 +31,9 @@
         <el-form-item label="邮箱" prop="email">
           <el-input v-model="user.email" placeholder="邮箱"></el-input>
         </el-form-item>
+        <el-form-item label="余额" prop="account">
+          {{user.account}}
+        </el-form-item>
         <div style="text-align: center; margin-bottom: 20px">
           <el-button type="primary" @click="update">保 存</el-button>
         </div>
@@ -49,6 +55,23 @@
         <el-button @click="fromVisible = false">取 消</el-button>
         <el-button type="primary" @click="save">确 定</el-button>
       </div>
+
+
+    </el-dialog>
+    <el-dialog title="个人充值" :visible.sync="rechargeVisible" width="30%" :close-on-click-modal="false" destroy-on-close>
+      <el-form label-width="80px" style="padding-right: 20px">
+        <el-form-item label="充值金额" prop="account">
+          <el-input v-model="account" placeholder="请输入充值金额"></el-input>
+        </el-form-item>
+        <el-form-item label="支付方式" prop="type">
+          <el-radio v-model="type" label="weiPay">微信</el-radio>
+          <el-radio v-model="type" label="aliPay">支付宝</el-radio>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="rechargeVisible = false">取 消</el-button>
+        <el-button type="primary" @click="recharge">确 定</el-button>
+      </div>
     </el-dialog>
   </div>
 </template>
@@ -68,7 +91,9 @@ export default {
     return {
       user: JSON.parse(localStorage.getItem('xm-user') || '{}'),
       dialogVisible: false,
-
+      rechargeVisible: false,
+      account: null,
+      type: "weiPay",
       rules: {
         password: [
           { required: true, message: '请输入原始密码', trigger: 'blur' },
@@ -83,9 +108,33 @@ export default {
     }
   },
   created() {
-
+    this.loadUser();
   },
   methods: {
+    loadUser() {
+      this.$request.get('/user/selectById/' + this.user.id).then(res => {
+        if (res.code === '200') {
+          this.user = res.data
+          localStorage.setItem('xm-user', JSON.stringify(this.user))
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
+    },
+    rechargeInit() {
+      this.account = 500
+      this.rechargeVisible = true
+    },
+    recharge() {
+      this.$request.get('/user/recharge/' + this.account).then(res => {
+        if (res.code === '200') {
+          this.$message.success('充值成功')
+          this.rechargeVisible = false
+          this.loadUser()
+        }
+      })
+    },
+
     update() {
       // 保存当前的用户信息到数据库
       this.$request.put('/user/update', this.user).then(res => {
@@ -110,6 +159,7 @@ export default {
     updatePassword() {
       this.dialogVisible = true
     },
+
     save() {
       this.$refs.formRef.validate((valid) => {
         if (valid) {
@@ -124,7 +174,8 @@ export default {
           })
         }
       })
-    }
+    },
+
   }
 }
 </script>

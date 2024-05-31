@@ -113,8 +113,13 @@ public class UesrServiceImpl implements UserService {
     }
 
     @Override
-    public Account selectById(Integer id) {
-        return userMapper.selectById(id);
+    public User selectById(Integer id) {
+        User user = userMapper.selectById(id);
+        // 生成token
+        String tokenData = user.getId() + "-" + RoleEnum.USER.name();
+        String token = TokenUtils.createToken(tokenData, user.getPassword());
+        user.setToken(token);
+        return user;
     }
 
     @Override
@@ -128,6 +133,18 @@ public class UesrServiceImpl implements UserService {
         }
         dbUser.setPassword(account.getNewPassword());
         userMapper.updateById(dbUser);
+    }
+
+    /**
+     * 余额充值
+     * @param account
+     */
+    @Override
+    public void recharge(Double account) {
+        Account currentUser = TokenUtils.getCurrentUser();
+        User user = userMapper.selectById(currentUser.getId());
+        user.setAccount(user.getAccount() + account);
+        userMapper.updateById(user);
     }
 
 
