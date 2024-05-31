@@ -14,9 +14,10 @@
         <el-form-item prop="confirmPass">
           <el-input size="medium" prefix-icon="el-icon-lock" placeholder="请确认密码" show-password  v-model="form.confirmPass"></el-input>
         </el-form-item>
+
         <el-form-item>
           <el-select v-model="form.role" placeholder="请选择角色" style="width: 100%">
-            <el-option label="管理员" value="ADMIN"></el-option>
+<!--            <el-option label="管理员" value="ADMIN"></el-option>-->
             <el-option label="用户" value="USER"></el-option>
           </el-select>
         </el-form-item>

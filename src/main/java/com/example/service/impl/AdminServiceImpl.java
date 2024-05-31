@@ -14,6 +14,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -99,9 +100,14 @@ public class AdminServiceImpl implements AdminService {
         if (ObjectUtil.isNull(dbAdmin)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!account.getPassword().equals(dbAdmin.getPassword())) {
+
+        //        进行MD5加密
+        String password = account.getPassword();
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        if (!password.equals(dbAdmin.getPassword())) {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
+
         // 生成token
         String tokenData = dbAdmin.getId() + "-" + RoleEnum.ADMIN.name();
         String token = TokenUtils.createToken(tokenData, dbAdmin.getPassword());
@@ -114,6 +120,10 @@ public class AdminServiceImpl implements AdminService {
      */
     public void register(Account account) {
         Admin admin = new Admin();
+        //        进行MD5加密
+        String password = account.getPassword();
+        password  = DigestUtils.md5DigestAsHex(password.getBytes());
+        account.setPassword(password);
         BeanUtils.copyProperties(account, admin);
         add(admin);
     }
@@ -126,10 +136,17 @@ public class AdminServiceImpl implements AdminService {
         if (ObjectUtil.isNull(dbAdmin)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!account.getPassword().equals(dbAdmin.getPassword())) {
+
+        //        保存为MD5加密密码
+        String password = account.getPassword();
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        if (!password.equals(dbAdmin.getPassword())) {
             throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
         }
-        dbAdmin.setPassword(account.getNewPassword());
+        String newPassword = account.getNewPassword();
+        newPassword = DigestUtils.md5DigestAsHex(newPassword.getBytes());
+        dbAdmin.setPassword(newPassword);
+
         adminMapper.updateById(dbAdmin);
     }
 

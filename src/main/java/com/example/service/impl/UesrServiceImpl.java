@@ -15,6 +15,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import java.util.List;
 
@@ -95,9 +96,16 @@ public class UesrServiceImpl implements UserService {
         if (ObjectUtil.isNull(dbUser)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!account.getPassword().equals(dbUser.getPassword())) {
+//        if (!account.getPassword().equals(dbUser.getPassword())) {
+//            throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
+//        }
+        //        进行MD5加密
+        String password = account.getPassword();
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        if (!password.equals(dbUser.getPassword())) {
             throw new CustomException(ResultCodeEnum.USER_ACCOUNT_ERROR);
         }
+
         // 生成token
         String tokenData = dbUser.getId() + "-" + RoleEnum.USER.name();
         String token = TokenUtils.createToken(tokenData, dbUser.getPassword());
@@ -108,6 +116,11 @@ public class UesrServiceImpl implements UserService {
     @Override
     public void register(Account account) {
         User user = new User();
+        //        进行MD5加密
+        String password = account.getPassword();
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        account.setPassword(password);
+
         BeanUtils.copyProperties(account, user);
         add(user);
     }
@@ -128,10 +141,21 @@ public class UesrServiceImpl implements UserService {
         if (ObjectUtil.isNull(dbUser)) {
             throw new CustomException(ResultCodeEnum.USER_NOT_EXIST_ERROR);
         }
-        if (!account.getPassword().equals(dbUser.getPassword())) {
+//        if (!account.getPassword().equals(dbUser.getPassword())) {
+//            throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
+//        }
+
+        //        保存为MD5加密密码
+        String password = account.getPassword();
+        password = DigestUtils.md5DigestAsHex(password.getBytes());
+        if (!password.equals(dbUser.getPassword())) {
             throw new CustomException(ResultCodeEnum.PARAM_PASSWORD_ERROR);
         }
-        dbUser.setPassword(account.getNewPassword());
+        String newPassword = account.getNewPassword();
+        newPassword = DigestUtils.md5DigestAsHex(newPassword.getBytes());
+        dbUser.setPassword(newPassword);
+
+//        dbUser.setPassword(account.getNewPassword());
         userMapper.updateById(dbUser);
     }
 

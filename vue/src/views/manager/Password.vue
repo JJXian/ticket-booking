@@ -3,7 +3,6 @@
     <el-card style="width: 50%">
       <el-form ref="formRef" :model="user" :rules="rules" label-width="100px" style="padding-right: 50px">
         <el-form-item label="原始密码" prop="password">
-<!--          <el-input show-password v-model="user.password" placeholder="原始密码"></el-input>-->
           <el-input show-password v-model="user.password" placeholder="原始密码"></el-input>
         </el-form-item>
         <el-form-item label="新密码" prop="newPassword">

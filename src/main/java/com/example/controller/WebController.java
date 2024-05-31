@@ -58,9 +58,10 @@ public class WebController {
                 || ObjectUtil.isEmpty(account.getRole())) {
             return Result.error(ResultCodeEnum.PARAM_LOST_ERROR);
         }
-        if (RoleEnum.ADMIN.name().equals(account.getRole())) {
-            adminService.register(account);
-        }
+        // 取消管理员的注册
+//        if (RoleEnum.ADMIN.name().equals(account.getRole())) {
+//            adminService.register(account);
+//        }
         if (RoleEnum.USER.name().equals(account.getRole())) {
             userService.register(account);
         }
