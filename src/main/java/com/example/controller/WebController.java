@@ -6,7 +6,7 @@ import com.example.common.Result;
 import com.example.common.enums.ResultCodeEnum;
 import com.example.common.enums.RoleEnum;
 import com.example.entity.Account;
-import com.example.service.AdminService;
+import com.example.service.impl.AdminServiceImpl;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -18,7 +18,7 @@ import javax.annotation.Resource;
 public class WebController {
 
     @Resource
-    private AdminService adminService;
+    private AdminServiceImpl adminService;
 
     @GetMapping("/")
     public Result hello() {
