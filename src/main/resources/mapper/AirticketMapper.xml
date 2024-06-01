@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.AirticketMapper">
+
+    <sql id="Base_Column_List">
+        id,name,img,start_time,end_time,start_airport,end_airport,price,time,num,start_city,end_city
+    </sql>
+
+    <insert id="insert" parameterType="com.example.entity.Airticket" useGeneratedKeys="true">
+        insert into airticket
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="name != null">name,</if>
+            <if test="img != null">img,</if>
+            <if test="startTime != null">start_time,</if>
+            <if test="endTime != null">end_time,</if>
+            <if test="startAirport != null">start_airport,</if>
+            <if test="endAirport != null">end_airport,</if>
+            <if test="price != null">price,</if>
+            <if test="time != null">time,</if>
+            <if test="num != null">num,</if>
+            <if test="startCity != null">start_city,</if>
+            <if test="endCity != null">end_city,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="img != null">#{img},</if>
+            <if test="startTime != null">#{startTime},</if>
+            <if test="endTime != null">#{endTime},</if>
+            <if test="startAirport != null">#{startAirport},</if>
+            <if test="endAirport != null">#{endAirport},</if>
+            <if test="price != null">#{price},</if>
+            <if test="time != null">#{time},</if>
+            <if test="num != null">#{num},</if>
+            <if test="startCity != null">#{startCity},</if>
+            <if test="endCity != null">#{endCity},</if>
+        </trim>
+    </insert>
+
+
+    <select id="selectAll" resultType="com.example.entity.Airticket">
+        select
+            <include refid="Base_Column_List"></include>
+        from airticket
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="name != null"> and name like concat('%', #{name}, '%')</if>
+            <if test="startAirport != null"> and start_airport like concat('%', #{startAirport}, '%')</if>
+            <if test="endAirport != null"> and end_airport like concat('%', #{endAirport}, '%')</if>
+        </where>
+        order by id desc
+    </select>
+
+    <update id="updateById" parameterType="com.example.entity.Airticket">
+        update airticket
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="startAirport != null">
+                start_airport = #{startAirport},
+            </if>
+            <if test="endAirport != null">
+                end_airport = #{endAirport},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="num != null">
+                num = #{num},
+            </if>
+            <if test="startCity != null">
+                start_city = #{startCity},
+            </if>
+            <if test="endCity != null">
+                end_city = #{endCity},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+</mapper>
